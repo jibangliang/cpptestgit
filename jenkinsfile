@@ -1,0 +1,48 @@
+pipeline {
+    agent {
+        label {
+            label ""
+            // Jenkinsワークスペース
+            
+        }
+    }
+
+    environment{
+  WORKSPACE='/home/bji/env_make/cpptestgit'
+  CPPTEST_INS='/home/bji/P20/parasoft/cpptest/10.5'
+  CPPTEST_SETTING='/home/bji/env_make'
+    }
+
+    stages{
+        stage('C++test ワークスペースの削除') {
+            steps{
+                sh '''cd ${WORKSPACE}
+                   cd ../
+                  rm -rf ${WORKSPACE}
+                 git clone https://github.com/jibangliang/cpptestgit.git'''
+            }
+        }
+        stage('ビルド - BDFファイル作成') {
+            steps{
+            sh '''export PATH=$PATH:${CPPTEST_INS}
+  
+            cd ${WORKSPACE}
+            cpptesttrace gcc main.c'''
+            }
+        }
+        stage('C++test プロジェクト作成') {
+            steps{
+            sh '''export PATH=$PATH:${CPPTEST_INS}
+            cd ${WORKSPACE}
+            cpptestcli -data ${WORKSPACE} -bdf cpptestscan.bdf -localsettings ${CPPTEST_SETTING}/ls.properties'''
+            }
+        }
+        stage('静的解析実行') {
+            steps{
+            sh '''export PATH=$PATH:${CPPTEST_INS}
+            cd ${WORKSPACE}
+            cpptestcli -data ${WORKSPACE} -resource cpptestgit -localsettings ${CPPTEST_SETTING}/ls.properties -config "builtin://Flow Analysis Aggressive"  -publish -showdetails -appconsole stdout'''
+            }
+        }
+    }
+}
