@@ -11,7 +11,7 @@ pipeline {
   WORKSPACE='/home/bji/env_make/cpptestgit'
   CPPTEST_INS='/home/bji/P20/parasoft/cpptest/10.5'
   CPPTEST_SETTING='/home/bji/env_make'
-  LANG=ja_JP.UTF8 
+  LANG='ja_JP.UTF8'
     }
 
     stages{
