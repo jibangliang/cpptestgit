@@ -17,9 +17,11 @@ pipeline {
     stages{
         stage('C++test ワークスペースの削除') {
             steps{
-                sh '''cd ${WORKSPACE}
+                sh '''if [-d ${WORKSPACE}]; then
+                   cd ${WORKSPACE}
                    cd ../
                   rm -rf ${WORKSPACE}
+                  fi
                  git clone https://github.com/jibangliang/cpptestgit.git'''
             }
         }
