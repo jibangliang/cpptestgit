@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        label {
+            label ""
+            // Jenkinsワークスペース
+            
+        }
+    }
 
     environment{
   WORKSPACE='/home/bji/env_make/cpptestgit'
@@ -11,15 +17,17 @@ pipeline {
     stages{
         stage('C++test ワークスペースの削除') {
             steps{
-                sh '''
+                sh '''if [-d ${WORKSPACE}]
+                   then
                    cd ${WORKSPACE}
                    cd ../
                   rm -rf ${WORKSPACE}
+                  fi
                  git clone https://github.com/jibangliang/cpptestgit.git'''
             }
         }
         stage('ビルド - BDFファイル作成') {
-            steps{
+            steps{dsad
             sh '''export PATH=$PATH:${CPPTEST_INS}
   
             cd ${WORKSPACE}
@@ -42,9 +50,3 @@ pipeline {
         }
     }
 }
-    post {
-        always {
-            
-        }
-    }
-
