@@ -17,7 +17,7 @@ pipeline {
     stages{
         stage('C++test ワークスペースの削除') {
             steps{
-                sh '''if[-d ${WORKSPACE}]; 
+                sh '''if [-d ${WORKSPACE}]; 
                    then
                    cd ${WORKSPACE}
                    cd ../
