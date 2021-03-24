@@ -1,11 +1,5 @@
 pipeline {
-    agent {
-        label {
-            label ""
-            // Jenkinsワークスペース
-            
-        }
-    }
+    agent any
 
     environment{
   WORKSPACE='/home/bji/env_make/cpptestgit'
@@ -45,6 +39,12 @@ pipeline {
             cd ${WORKSPACE}
             cpptestcli -data ${WORKSPACE} -resource cpptestgit -localsettings ${CPPTEST_SETTING}/ls.properties -config "builtin://Flow Analysis Aggressive"  -publish -showdetails -appconsole stdout'''
             }
+        }
+    }
+}
+    post {
+        always {
+            
         }
     }
 }
