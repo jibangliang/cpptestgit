@@ -37,7 +37,6 @@ pipeline {
         stage('C++test プロジェクト作成') {
             steps{
             sh '''export PATH=$PATH:${CPPTEST_INS}
-            cd ${WORK}
             cpptestcli -data ${WORK} -bdf ${PROJECT}/cpptestscan.bdf -localsettings ${CPPTEST_SETTING}/ls.properties'''
             }
         }
