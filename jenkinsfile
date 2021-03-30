@@ -8,19 +8,21 @@ pipeline {
     }
 
     environment{
-  WORKSPACE='/home/bji/env_make/cpptestgit'
+  PROJECT='/home/bji/env_make/cpptestgit'
   CPPTEST_INS='/home/bji/P20/parasoft/cpptest/10.5'
   CPPTEST_SETTING='/home/bji/env_make'
   LANG='ja_JP.UTF8'
+  WORK='/home/bji/env_make/work'
     }
 
     stages{
         stage('C++test ワークスペースの削除') {
             steps{
                 sh '''
-                   cd ${WORKSPACE}
+                   cd ${PROJECT}
                    cd ../
-                  rm -rf ${WORKSPACE}
+                  rm -rf ${PROJECT}
+                    rm -rf ${WORK}
                  git clone https://github.com/jibangliang/cpptestgit.git'''
             }
         }
@@ -28,22 +30,22 @@ pipeline {
             steps{
             sh '''export PATH=$PATH:${CPPTEST_INS}
   
-            cd ${WORKSPACE}
+            cd ${PROJECT}
             cpptesttrace gcc main.c'''
             }
         }
         stage('C++test プロジェクト作成') {
             steps{
             sh '''export PATH=$PATH:${CPPTEST_INS}
-            cd ${WORKSPACE}
-            cpptestcli -data ${WORKSPACE} -bdf cpptestscan.bdf -localsettings ${CPPTEST_SETTING}/ls.properties'''
+            cd ${WORK}
+            cpptestcli -data ${WORK} -bdf ${PROJECT}/cpptestscan.bdf -localsettings ${CPPTEST_SETTING}/ls.properties'''
             }
         }
         stage('静的解析実行') {
             steps{
             sh '''export PATH=$PATH:${CPPTEST_INS}
             cd ${WORKSPACE}
-            cpptestcli -data ${WORKSPACE} -resource cpptestgit -localsettings ${CPPTEST_SETTING}/ls.properties -config "builtin://Flow Analysis Aggressive"  -publish -showdetails -appconsole stdout'''
+            cpptestcli -data ${WORK} -resource cpptestgit -localsettings ${CPPTEST_SETTING}/ls.properties -config "/home/bji/env_make/Flow Analysis Standard.properties"  -publish -showdetails -appconsole stdout'''
             }
         }
     }
