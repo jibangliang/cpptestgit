@@ -43,8 +43,9 @@ pipeline {
         }
         stage('静的解析実行') {
             steps{
-            export DATE_DATA=$(date +%Y-%m-%d)
-            sh '''export PATH=$PATH:${CPPTEST_INS}
+            
+            sh '''export DATE_DATA=$(date +%Y-%m-%d)
+            export PATH=$PATH:${CPPTEST_INS}
             cd ${WORKSPACE}
             cpptestcli -data ${WORK} -resource cpptestgit -localsettings ${CPPTEST_SETTING}/ls.properties -config "/home/bji/env_make/Flow Analysis Standard.properties"  -publish -showdetails -appconsole stdout'''
             }
