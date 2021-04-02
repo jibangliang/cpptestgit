@@ -26,3 +26,7 @@ int bar(int p, int q)
     return result;
 }
 
+int abc(){
+return 1;
+}
+
